@@ -1,0 +1,2 @@
+STEAM_ACCOUNT_LOGIN = 'yan_tbc'
+STEAM_ACCOUNT_PASSWORD = 'Drobachevsky2002'
