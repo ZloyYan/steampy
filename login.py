@@ -109,8 +109,14 @@ class LoginExecutor:
 
     def _prepare_login_request_data(self, encrypted_password: bytes, rsa_timestamp: str) -> dict:
 
+
+        # Получаем текущий каталог файла, в котором находится данный скрипт
+        current_dir = Path(__file__).parent
+
+        # Построение пути к steam_guard.json относительно текущего каталога
+        file_path_steam_guard = current_dir / 'app_marketplace' / 'steam_guard.json'
         # Чтение данных из файла steam_guard.json
-        with open('/Users/yanik/Desktop/Marketplace_backend/app_marketplace/steam_guard.json', 'r') as file:
+        with file_path_steam_guard.open('r') as file:
             steam_guard_data = json.load(file)
         return {
             'persistence': '1',
@@ -212,14 +218,19 @@ class LoginExecutor:
             # Пробуем получить refresh_token из ответа
             self.refresh_token = response.json()['response']['refresh_token']
         
+            # Получаем текущий каталог файла, в котором находится данный скрипт
+            current_dir = Path(__file__).parent
+
+            # Построение пути к refresh_token.json относительно текущего каталога
+            file_path_refresh_token = current_dir / 'app_marketplace' / 'refresh_token.json'
             # Сохраняем новый refresh_token в файл
-            with open('/Users/yanik/Desktop/Marketplace_backend/app_marketplace/refresh_token.json', 'w') as file:
+            with file_path_refresh_token.open('w') as file:
                 json.dump({'refresh_token': self.refresh_token}, file)
 
         except KeyError:
             # Если возникло исключение, загружаем refresh_token из файла
             try:
-                with open('/Users/yanik/Desktop/Marketplace_backend/app_marketplace/refresh_token.json', 'r') as file:
+                with file_path_refresh_token.open('r') as file:
                     data = json.load(file)
                     self.refresh_token = data.get('refresh_token', '')
             except FileNotFoundError:
