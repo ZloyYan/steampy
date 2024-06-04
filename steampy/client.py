@@ -27,8 +27,6 @@ from steampy.utils import (
     login_required,
 )
 
-from steampy.__pycache__.login_info import *
-
 
 class SteamClient:
     def __init__(
@@ -133,10 +131,9 @@ class SteamClient:
         self.logout()
 
     # @login_required
-    def is_session_alive(self, cookies_dict: dict) -> bool:
+    def is_session_alive(self, steam_login, cookies_dict: dict) -> bool:
         # steam_login = self.username
         self._session.cookies.update(cookies_dict)
-        steam_login = STEAM_ACCOUNT_LOGIN
         headers = {
        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
         }
