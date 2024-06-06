@@ -3,7 +3,7 @@ from base64 import b64encode
 import json
 from pathlib import Path
 from decouple import config 
-
+import os
 
 from rsa import encrypt, PublicKey
 from requests import Session, Response
@@ -167,11 +167,15 @@ class LoginExecutor:
     #         raise Exception('Cannot update Steam guard')
         
 
+
     
 
     def _update_steam_guard(self, login_response: Response) -> None:
+        # Определяем корневой путь проекта из переменной окружения
+        project_root = config('PROJECT_ROOT')
+        # Определяем путь к файлу client_id.json
+        client_id_file = Path(os.path.join(project_root, 'client_id.json'))
         
-        client_id_file = Path('/Marketplace_backend/client_id.json')
 
         try:
             response_data = login_response.json()['response']
