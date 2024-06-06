@@ -202,11 +202,11 @@ class LoginExecutor:
             # Пробуем получить refresh_token из ответа
             self.refresh_token = response.json()['response']['refresh_token']
         
-            # Получаем текущий каталог файла, в котором находится данный скрипт
-            current_dir = Path(__file__).parent
+            # Определяем корневой путь проекта из переменной окружения
+            project_root = config('PROJECT_ROOT')
+            # Определяем путь к файлу client_id.json
+            file_path_refresh_token = Path(os.path.join(project_root, 'refresh_token.json'))
 
-            # Построение пути к refresh_token.json относительно текущего каталога
-            file_path_refresh_token = current_dir / 'app_marketplace' / 'refresh_token.json'
             # Сохраняем новый refresh_token в файл
             with file_path_refresh_token.open('w') as file:
                 json.dump({'refresh_token': self.refresh_token}, file)
