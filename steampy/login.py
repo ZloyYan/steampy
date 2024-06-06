@@ -2,6 +2,8 @@ from http import HTTPStatus
 from base64 import b64encode
 import json
 from pathlib import Path
+from decouple import config 
+
 
 from rsa import encrypt, PublicKey
 from requests import Session, Response
@@ -110,14 +112,10 @@ class LoginExecutor:
     def _prepare_login_request_data(self, encrypted_password: bytes, rsa_timestamp: str) -> dict:
 
 
-        # Получаем текущий каталог файла, в котором находится данный скрипт
-        current_dir = Path(__file__).parent
-
-        # Построение пути к steam_guard.json относительно текущего каталога
-        file_path_steam_guard = current_dir / 'app_marketplace' / 'steam_guard.json'
-        # Чтение данных из файла steam_guard.json
-        with file_path_steam_guard.open('r') as file:
-            steam_guard_data = json.load(file)
+        # Чтение данных из переменной окружения
+        steam_guard_data_json = config('STEAM_GUARD_DATA')
+        # Преобразование JSON строки в словарь
+        steam_guard_data = json.loads(steam_guard_data_json)
         return {
             'persistence': '1',
             'encrypted_password': encrypted_password,
@@ -173,7 +171,7 @@ class LoginExecutor:
 
     def _update_steam_guard(self, login_response: Response) -> None:
         
-        client_id_file = Path('/Users/yanik/Desktop/Marketplace_backend/client_id.json')
+        client_id_file = Path('/Marketplace_backend/client_id.json')
 
         try:
             response_data = login_response.json()['response']
