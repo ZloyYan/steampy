@@ -149,25 +149,7 @@ class LoginExecutor:
             pass_data['params']['steamID'] = response_dict['steamID']
             self.session.post(pass_data['url'], pass_data['params'])
 
-    # def _update_steam_guard(self, login_response: Response) -> None:
-
-    #     client_id = login_response.json()['response']['client_id']
-    #     steamid = login_response.json()['response']['steamid']
-    #     request_id = login_response.json()['response']['request_id']
-    #     code_type = 3
-    #     code = guard.generate_one_time_code(self.shared_secret)
-
-    #     update_data = {'client_id': client_id, 'steamid': steamid, 'code_type': code_type, 'code': code}
-    #     response = self._api_call(
-    #         'POST', 'IAuthenticationService', 'UpdateAuthSessionWithSteamGuardCode', params=update_data
-    #     )
-    #     if response.status_code == HTTPStatus.OK:
-    #         self._pool_sessions_steam(client_id, request_id)
-    #     else:
-    #         raise Exception('Cannot update Steam guard')
-        
-
-
+    
     
 
     def _update_steam_guard(self, login_response: Response) -> None:
@@ -175,7 +157,7 @@ class LoginExecutor:
         project_root = config('PROJECT_ROOT')
         # Определяем путь к файлу client_id.json
         client_id_file = Path(os.path.join(project_root, 'client_id.json'))
-        
+
 
         try:
             response_data = login_response.json()['response']
